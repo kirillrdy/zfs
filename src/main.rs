@@ -11,13 +11,15 @@ struct Dataset {
     mountpoint: String
 }
 
-fn main() {
+fn list_datasets() -> Vec<Dataset> {
     //TODO remove all unwraps
     //TODO name things better
     let output = Command::new("zfs").arg("list").arg("-H").output().unwrap().stdout;
     let output = String::from_utf8(output).unwrap();
+    let mut datasets: Vec<Dataset> = Vec::new();
     for item in output.split("\n") {
 
+        //Last item of the split by \n
         if item == "" {
             continue
         }
@@ -31,6 +33,15 @@ fn main() {
             referred: values[3].to_string(), //TODO can values[n] crash ?
             mountpoint: values[4].to_string(), //TODO can values[n] crash ?
         };
-        println!("{:?}", dataset);
+        datasets.push(dataset)
+        //println!("{:?}", dataset);
+    }
+    datasets
+}
+
+fn main() {
+    let datasets = list_datasets();
+    for dataset in datasets {
+        println!("{}", dataset.name)
     }
 }
