@@ -11,7 +11,9 @@ struct Dataset {
     mountpoint: String
 }
 
-fn list_datasets() -> Vec<Dataset> {
+type Datasets = Vec<Dataset>;
+
+fn list_datasets() -> Datasets {
     //TODO remove all unwraps
     //TODO name things better
     let output = Command::new("zfs").arg("list").arg("-H").output().unwrap().stdout;
