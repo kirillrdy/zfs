@@ -1,5 +1,5 @@
-mod types;
 mod datasets;
+mod types;
 
 fn main() {
     let datasets = datasets::list();
