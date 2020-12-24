@@ -1,9 +1,7 @@
 mod datasets;
-mod types;
 
 fn main() {
-    let datasets = datasets::list();
-    for dataset in datasets {
-        println!("{}", dataset.name)
+    for dataset in datasets::list().unwrap() {
+        println!("{:?}", dataset)
     }
 }

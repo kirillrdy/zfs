@@ -1,7 +1,15 @@
-use crate::types::{Dataset, Datasets};
 use std::process::Command;
 
-pub fn list() -> Datasets {
+#[derive(Debug)]
+pub struct Dataset {
+    pub name: String,
+    pub used: String,
+    pub available: String,
+    pub referred: String,
+    pub mountpoint: String,
+}
+
+pub fn list() -> Result<Vec<Dataset>, Box<std::error::Error>> {
     //TODO remove all unwraps
     //TODO name things better
     let output = Command::new("zfs")
@@ -12,13 +20,13 @@ pub fn list() -> Datasets {
         .stdout;
     let output = String::from_utf8(output).unwrap();
     let mut datasets: Vec<Dataset> = Vec::new();
-    for item in output.split("\n") {
+    for item in output.split('\n') {
         //Last item of the split by \n
         if item == "" {
             continue;
         }
 
-        let values: Vec<&str> = item.split("\t").collect();
+        let values: Vec<&str> = item.split('\t').collect();
         let dataset = Dataset {
             //TODO difference between owned and to_string
             name: values[0].to_string(),      //TODO can values[n] crash ?
@@ -30,5 +38,5 @@ pub fn list() -> Datasets {
         datasets.push(dataset)
         //println!("{:?}", dataset);
     }
-    datasets
+    Ok(datasets)
 }
