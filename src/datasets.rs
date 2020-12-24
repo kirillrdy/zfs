@@ -9,7 +9,7 @@ pub struct Dataset {
     pub mountpoint: String,
 }
 
-pub fn list() -> Result<Vec<Dataset>, Box<std::error::Error>> {
+pub fn list() -> Result<Vec<Dataset>, Box<dyn std::error::Error>> {
     //TODO remove all unwraps
     //TODO name things better
     let output = Command::new("zfs")
